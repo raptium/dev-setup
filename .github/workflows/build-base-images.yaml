@@ -33,6 +33,7 @@ jobs:
             type=ref,event=pr,prefix=ubuntu-lts-
             type=ref,event=pr,prefix=ubuntu-lts-
             type=semver,pattern={{version}},prefix=ubuntu-lts-
+            type=sha
       - name: Build and Push (Ubuntu LTS)
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
