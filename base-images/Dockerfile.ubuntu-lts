@@ -41,4 +41,3 @@ RUN useradd ${USER} \
 
 USER ${USER}
 RUN touch /home/${USER}/.zshrc
-RUN mkdir -p /home/${USER}/.ssh && chmod 0700 /home/${USER}/.ssh
