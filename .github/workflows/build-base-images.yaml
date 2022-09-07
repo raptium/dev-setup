@@ -22,15 +22,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Extract Docker metadata (Ubuntu LTS)
-        id: meta
+        id: meta-ubuntu-lts
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=schedule,prefix=ubuntu-lts-
+            type=ref,event=branch,prefix=ubuntu-lts-
+            type=ref,event=tag,prefix=ubuntu-lts-
+            type=ref,event=pr,prefix=ubuntu-lts-
+            type=ref,event=pr,prefix=ubuntu-lts-
+            type=semver,pattern={{version}},prefix=ubuntu-lts-
       - name: Build and Push (Ubuntu LTS)
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
           context: ./base-images
           file: ./base-images/Dockerfile.ubuntu-lts
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-ubuntu-lts.outputs.tags }}
+          labels: ${{ steps.meta-ubuntu-lts.outputs.labels }}
